@@ -2,12 +2,16 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // Schema to enforce consistent structure.
-const TodoSchema = new mongoose.Schema({
+const ItemSchema = new mongoose.Schema({
   name: String,
   completed: { type: Boolean, default: false },
   note: { type: String, default: '' },
   updatedAt: { type: Date, default: Date.now },
-  items : { type: Schema.Types.ObjectId, ref: 'Item' },
+  todo: [{ type: Schema.Types.ObjectId, ref: 'Todo' }]
 });
 
-module.exports = mongoose.model('Todo', TodoSchema);
+module.exports = mongoose.model('Item', ItemSchema);
+
+
+
+

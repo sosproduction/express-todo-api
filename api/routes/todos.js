@@ -3,6 +3,10 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Todo = require('../models/Todo.js');
 
+// require child route todos/1/items
+const items = require('./items');
+router.use('/:id/items', items);
+
 /* GET /todos listing. */
 router.get('/', (req, res, next) => {
   Todo.find().sort({ updatedAt: -1 }).exec((err, todos) => {
@@ -10,6 +14,15 @@ router.get('/', (req, res, next) => {
     res.json(todos);
   });
 });
+
+/* GET /todos/id */
+router.get('/:id', (req, res, next) => {
+  Todo.findById(req.params.id, (err, todo) => {
+    if (err) return next(err);
+    res.json(todo);
+  });
+});
+
 
 /* POST /todos */
 router.post('/', (req, res, next) => {
@@ -21,13 +34,6 @@ router.post('/', (req, res, next) => {
   });
 });
 
-/* GET /todos/id */
-router.get('/:id', (req, res, next) => {
-  Todo.findById(req.params.id, (err, todo) => {
-    if (err) return next(err);
-    res.json(todo);
-  });
-});
 
 /* PUT /todos/:id */
 router.put('/:id', (req, res, next) => {
